@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="footer">
+
+    <footer class="footer">
+
+        Projet Spring Boot SGE © 2026
+
+        <div th:if="${#authentication.authenticated}">
+            <form th:action="@{/logout}" method="post" style="margin-top:10px;">
+                <button type="submit">Déconnexion</button>
+            </form>
+        </div>
+
+    </footer>
+
+</div>
+
+</body>
+
+</html>

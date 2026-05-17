@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Bulletins</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #fff;
+            color: #000;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #eaeaea;
+            font-weight: bold;
+        }
+
+        a {
+            text-decoration: none;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .admis {
+            background-color: #f9f9f9;
+            font-weight: bold;
+        }
+
+        .ajourn {
+            background-color: #fff;
+            font-weight: bold;
+        }
+
+        .status-admis {
+            color: #000;
+            font-weight: bold;
+        }
+
+        .status-ajourn {
+            color: #000;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div th:insert="~{fragments/navbar :: navbar}"></div>
+
+<h2>Liste des Bulletins</h2>
+
+<p>
+    <span sec:authorize="hasRole('ADMIN')">Vue ADMIN : accès complet aux notes et bulletins.</span>
+    <span sec:authorize="hasRole('USER')">Vue USER : consultation des bulletins et notes autorisée.</span>
+</p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Groupe</th>
+        <th>Filière</th>
+        <th>Moyenne</th>
+        <th>Mention</th>
+        <th>Statut</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="bulletin : ${bulletins}"
+        th:class="${bulletin.admis} ? 'admis' : 'ajourn'">
+
+
+        <td th:text="${bulletin.etudiant.nom}"></td>
+
+
+        <td th:text="${bulletin.etudiant.prenom}"></td>
+
+
+        <td th:text="${bulletin.etudiant.groupe}"></td>
+
+
+        <td th:text="${bulletin.etudiant.filiere.nom}"></td>
+
+
+        <td th:text="${#numbers.formatDecimal(bulletin.moyenneGenerale, 1, 2)}"></td>
+
+
+        <td th:text="${bulletin.mention}"></td>
+
+
+        <td>
+            <span th:if="${bulletin.admis}" class="status-admis">ADMIS</span>
+            <span th:unless="${bulletin.admis}" class="status-ajourn">AJOURNÉ</span>
+        </td>
+
+        <!-- Lien détail bulletin -->
+        <td>
+            <a th:href="@{'/bulletins/' + ${bulletin.etudiant.id}}">
+                Voir bulletin
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>

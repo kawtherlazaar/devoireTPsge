@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bulletin de Notes</title>
+    <style>
+        body { font-family: "Times New Roman", serif; background: white; }
+        .container { width: 700px; margin: 30px auto; }
+        .header-box { border: 1px solid black; text-align: center; padding: 20px; }
+        .header-box h1 { margin: 0; font-size: 38px; font-weight: bold; }
+        .header-box h3 { margin-top: 10px; font-weight: normal; }
+        .info-box { border: 1px solid black; border-top: none; padding: 15px; font-size: 22px; }
+        .info-row { margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 20px; }
+        th, td { border: 1px solid black; padding: 8px; }
+        th { text-align: center; font-weight: bold; }
+        .left { text-align: left; }
+        .center { text-align: center; }
+        .footer-box { border: 1px solid black; margin-top: 20px; padding: 20px; font-style: italic; font-size: 18px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header-box">
+        <h1>BULLETIN DE NOTES</h1>
+        <h3>Année Universitaire 2025 – 2026</h3>
+    </div>
+
+    <!-- INFOS -->
+    <div class="info-box">
+        <div class="info-row">
+            <strong>Étudiant :</strong>
+            <span th:text="${bulletin.etudiant.nom} + ' ' + ${bulletin.etudiant.prenom}"></span>
+        </div>
+        <div class="info-row">
+            <strong>Groupe :</strong>
+            <span th:text="${bulletin.etudiant.groupe}"></span>
+        </div>
+        <div class="info-row">
+            <strong>Filière :</strong>
+            <span th:text="${bulletin.etudiant.filiere.nom}"></span>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <table>
+        <thead>
+        <tr>
+            <th class="left">Module</th>
+            <th>Coefficient</th>
+            <th>Note</th>
+            <th>Somme</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="note : ${bulletin.notes}">
+            <td class="left" th:text="${note.module.nom}"></td>
+            <td class="center" th:text="${note.module.coefficient}"></td>
+            <td class="center" th:text="${note.valeur}"></td>
+            <td class="center" th:text="${note.valeur * note.module.coefficient}"></td>
+        </tr>
+
+        <!-- TOTAL -->
+        <tr>
+            <td class="left"><strong>Total</strong></td>
+            <td class="center"><strong th:text="${bulletin.totalCoefficient}"></strong></td>
+            <td></td>
+            <td class="center"><strong th:text="${bulletin.totalSomme}"></strong></td>
+        </tr>
+
+        <!-- MOYENNE -->
+        <tr>
+            <td colspan="3" class="left"><strong>Moyenne Générale</strong></td>
+            <td class="center"><strong th:text="${bulletin.moyenneGenerale}"></strong></td>
+        </tr>
+
+        <!-- MENTION -->
+        <tr>
+            <td colspan="3" class="left"><strong>Mention</strong></td>
+            <td class="center"><strong th:text="${bulletin.mention}"></strong></td>
+        </tr>
+
+        <!-- RESULTAT -->
+        <tr>
+            <td colspan="3" class="left"><strong>Résultat</strong></td>
+            <td class="center">
+                <strong th:if="${bulletin.admis}">ADMIS</strong>
+                <strong th:unless="${bulletin.admis}">AJOURNÉ</strong>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- FOOTER -->
+    <div class="footer-box">
+        Ce bulletin est généré automatiquement par le Système de Gestion des Étudiants (SGE).
+    </div>
+</div>
+</body>
+</html>
